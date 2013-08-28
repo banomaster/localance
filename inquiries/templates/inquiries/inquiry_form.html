@@ -1,0 +1,30 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+			  <div id="error_div" class="alert alert-error hide">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  </div>
+		<form class = "inquiry-form" method="post" action="./inquiries/add/">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal">×</button>
+		    <h3>Send Inquiry</h3>
+		  </div>
+		  {% if user.is_authenticated %}
+		  <div class="modal-body">
+		       {% csrf_token %}
+		       {{form.as_p}} 
+		  </div>
+		  <div class="modal-footer">
+		       <input class="btn btn-primary" type="submit" value="Save" />
+		       <input name="cancel" id = "cancel-button" class="btn" type="submit" value="Cancel"/>
+		  </div>
+		  {% else %}
+		  	<p> You must be logged in to post an inquiry! </p>
+		  {% endif %}
+		</form>
+	</div>
+</div>
+<script>
+	 $('#cancel-button').click(function(){
+            $('#inquiryModal').modal('hide');
+        });
+</script>

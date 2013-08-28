@@ -1,0 +1,76 @@
+{% extends "_layouts/base.html" %}
+{% block page_content %}
+{% if user.is_authenticated %}
+	{% if dj.name.user.username == profile.user.username %}
+		{% if messages %}
+			<ul class = "messages">
+				{% for message in messages %}
+				<li id = "message_{{ forloop.counter }}"
+					{% if message.tags %} class = "{{ message.tags }}"
+						{% endif %}>
+					{{ message }}
+				</li>	
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endif %}
+{% endif %}
+<h2>Hello detail. NINJA</h2>
+	{% if user.is_authenticated %}
+		{% if dj.name.user.username == profile.user.username %}
+			<a href = "{% url 'edit_dj' dj.slug %}">Edit Profile</a>
+			<a href = "{% url 'delete_dj' dj.slug %}">Delite Profile</a>
+		{% endif %}
+	{% endif %}
+<h4>Reviews</h4> <a href="{% url 'review_create_dj' dj.slug %}">Add review</a>
+{% for review in reviews %}
+	<p>{{ review.user.user.username }}</p>
+	<p>{{ review.review_text }}</p>
+{% endfor %}
+<p><a href = "{% url 'list_djs' %}">&larr; DJs list</a></p>
+
+<!-- Button trigger modal -->
+<a href="#" id="inquiry-button" data-form = "./inquiries/add/" class="btn btn-primary btn-lg">Post an Inquiry</a>
+
+<div class="modal" id="inquiryModal" aria-hidden="true">
+</div>
+
+<script>
+    $("#inquiry-button").click(function(ev) { // for each edit contact url
+        ev.preventDefault(); // prevent navigation
+        var url = $(this).data("form"); // get the contact form url
+        $("#inquiryModal").load(url, function() { // load the url into the modal
+            $(this).modal('show'); // display the modal on url load
+        });
+        return false; // prevent the click propagation
+    });
+    
+
+    $('#inquiryModal').on('submit','.inquiry-form', function() {
+
+        $.ajax({ 
+            type: $(this).attr('method'), 
+            url: this.action, 
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, jqXHR) {
+                	$('#inquiryModal').modal('hide');	
+                },
+            error: function(xhr, ajaxOptions, thrownError){
+            	$('#error_div').append(thrownError);
+            	var err = eval("(" + xhr.responseText + ")");
+            	for (var key in err){
+            		console.log(err[key]);
+            		$('#error_div').append(key + ": " + err[key]);
+            	}
+				
+            	$('#error_div').toggleClass('hide');
+            }     	
+            
+        });
+        return false;
+    });
+
+</script>
+
+{% endblock %}

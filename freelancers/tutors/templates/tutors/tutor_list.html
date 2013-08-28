@@ -1,0 +1,11 @@
+{% extends "_layouts/base.html" %}
+{% block page_content %}
+<h2>Tutors</h2>
+<a href="{% url 'add_tutor' %}">Add tutor</a>
+<ul>
+	{% for tutor in tutors %}
+		<li><a href="{{ tutor.get_absolute_url }}">{{tutor.nickname}}</a></li>
+	{% endfor %}
+</ul>
+<p><a href = "{% url 'list_category' %}">&larr; Blog list</a></p>
+{% endblock %}

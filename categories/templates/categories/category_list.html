@@ -1,0 +1,10 @@
+{% extends "_layouts/base.html" %}
+{% block page_content %}
+<h2>Categories</h2>
+<ul>
+	{% for category in categories %}
+		<li><a href= "{{ category.get_absolute_url }}">{{category.name}}</a></li>
+	{% endfor %}
+</ul>
+{% endblock %}
+<h2>To je lista </h2>

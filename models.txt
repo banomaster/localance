@@ -1,0 +1,174 @@
+(abstract)
+*TimeStampedModel*
+
+class TimeStampedModel(models.Model):
+      
+      created = models.DateTimeField(auto_now_add=True)
+      modified = models.DateTimeField(auto_now=True)
+      
+      class Meta:
+          abstract = True
+
+
+from core.models import TimeStampedModel
+from django.core.urlresolvers import reverse
+ 
+class Freelancer(models.Model, TimeStampedModel):
+	name = models.ForeignField(UserAccount)
+	nickname = models.CharField(max_length = 30, blank = True)
+	slug = models.SlugField(max_length=255,blank=True,default='')
+	about = models.TextField()
+	tagline = models.TextField()
+	city = models.ManyToManyField(City)
+	category = models.ForeignKey(Category)
+	user_freelancer = models.ForeignKey(UserFreelancer)
+	personal_website = models.URLField(max_length = 40, blank = True)
+	available = models.BooleanField(default = False)
+	twitter_profile = models.URLField(max_length = 40, blank = True)
+	linkedin_profile = models.URLField(max_length = 50, blank = True)
+	featured_in_category = models.BooleanField(default = False)
+
+	class Meta:
+		abstract = True
+
+	def __unicode__(self):
+		return self.nickname 
+
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(self.name.name)
+		super(Freelancer,self).save(*args, **kwargs)
+
+	def get_absolute_url(self):
+		return reverse("freelancer_detail", kwargs={"slug":self.slug})
+
+class Photographer(Freelancer):
+	clients = models.ManyToManyField(ListPhotographerClients)
+	picture_portfolio = models.ImageField(upload_to='upload/portfolio/photographers',max_length=100)
+	skills = models.ManyToManyField(ListPhotographerSkills)
+
+
+class ListPhotographerSkills(models.Model):
+	skill = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.skill
+
+class ListPhotographerClients(models.Model):
+	client = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.client
+
+
+
+class DJ(Freelancer):
+	occasions = models.ManyToManyField(ListDJOccasions)
+	genres = models.ManyToManyField(ListDJGenres)
+	soundcloud_profile = models.URLField(max_length = 50)
+	picture_portfolio = models.ImageField(upload_to='upload/portfolio/DJ',max_length=100)
+
+
+class ListDJGenres(models.Model):
+	genre = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.genre
+
+class ListDJOccasions(models.Model):
+	occasion = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.occasion
+
+
+class Tutor(Freelancer):
+	clients = models.ManyToManyField(ListTutorClients)
+	skills = models.ManyToManyField(ListTutorSkills)
+
+class ListTutorSkills(models.Model):
+	skill = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.skill
+
+class ListTutorClients(models.Model):
+	client = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.client
+
+class Category(models.Model, TimeStampedModel):
+	name = models.CharField (max_length = 30)
+	description = models.TextField()
+	cover_picture = models.ImageField(upload_to='content/categories/normal',max_length=100)
+	slug = models.SlugField(max_length=255,blank=True,default='')
+	cover_picture_thumb = models.ImageField(upload_to='content/categories/thumbs',max_length=100)
+	title = models.CharField (max_length = 50)
+	subtitle = models.CharField (max_length = 50)
+	title_section_featured = models.CharField (max_length = 50)
+
+	def __unicode__(self):
+		return self.name
+
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(self.name)
+		super(Category,self).save(*args, **kwargs)
+
+	def get_absolute_url(self):
+		return reverse("category_detail",kwargs={"slug":self.slug})
+
+
+class City(models.Model, TimeStampedModel):
+	name = models.CharField (max_length = 50)
+	description = models.TextField()
+
+	def __unicode__(self):
+		return self.name
+
+(abstract)
+*Inquiry*
+
+class Inquiry(models.Model, TimeStampedModel):
+	description = models.TextField()
+
+	class Meta:
+		abstract = True
+
+class InquiryPhotographer(Inquiry):
+	occasion = models.ForeignKey(ListPhotographerOccasion)
+	date = models.DateField(blank = True, null = True)
+	timeFrame = models.IntegerField(blank = True)
+	estimatedBudget = models.IntegerField(blank = True, null = True)
+
+class ListPhotographerOccasion(models.Model):
+	occasion = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.occasion
+
+class InquiryDJ(Inquiry,TimeStampedModel):
+	occasion = models.ForeignKey(ListDJOccasion)
+	date = models.DateField(blank = True, null = True)
+	estimated_budget = models.IntegerField(blank = True, null = True)
+
+class ListDJOccasion(models.Model):
+	occasion = models.CharField(max_length = 30)
+
+	def __unicode__(self):
+		return self.occasion
+
+class InquiryTutor(Inquiry,TimeStampedModel):
+	subjects = ManyToManyKey(ListTutorSkills)
+	date = models.DateField(blank = True, null = True)
+	estimated_budget = models.IntegerField(blank = True, null = True)
+
+class Review(models.Model,TimeStampedModel):
+	user = models.ForeignKey(User)
+	freelance = models.ForeignKey(Freelancer)
+	description = models.TextField()
+
+class UserFreelancer(models.Model):
+	user = models.ForeignKey(UserAccount)
+

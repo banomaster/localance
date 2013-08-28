@@ -1,0 +1,23 @@
+{% extends "_layouts/base.html" %}
+<html lang="en">
+<head>
+  {% block extrahead %}
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {% block meta %}{% endblock %}
+  {% endblock %}
+</head>
+<body>
+  {% block page_content %}
+  <div id="body">
+    {% block body %}
+      <div class="content_title">
+        {% block content_title %}{% endblock %}
+      </div>
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+  {% endblock %}
+</body>
+</html>

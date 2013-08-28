@@ -1,0 +1,11 @@
+{% extends "_layouts/base.html" %}
+{% block page_content %}
+<h2>Photographers</h2> 
+<a href="{% url 'add_photographer' %}">Add photographer</a> 
+<ul>
+	{% for photographer in photographers %}
+		<li><a href="{{ photographer.get_absolute_url }}">{{photographer.nickname}}</a></li>
+	{% endfor %}
+</ul>
+	<p><a href = "{% url 'list_category' %}">&larr; Blog list</a></p>
+{% endblock %}
