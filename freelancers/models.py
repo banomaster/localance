@@ -28,5 +28,5 @@ class Freelancer(TimeStampedModel):
 
 	def save(self, *args, **kwargs):
 		if not self.slug:
-			self.slug = slugify(self.name.get_full_name_or_username())
+			self.slug = slugify(self.name)
 		super(Freelancer,self).save(*args, **kwargs)

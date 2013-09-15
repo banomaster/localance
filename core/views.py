@@ -1,4 +1,7 @@
 from django.http import HttpResponse
+from django.views.generic.base import RedirectView
+from django.contrib.auth import logout
+from django.core.urlresolvers import reverse
 import json
 
 class AjaxableResponseMixin(object):
@@ -30,3 +33,20 @@ class AjaxableResponseMixin(object):
             return self.render_to_json_response(data)
         else:
             return response# Create your views here.
+
+class SignOut(RedirectView):
+
+    permanent = False
+    query_string = True
+ 
+    def get_redirect_url(self):
+        logout(self.request)
+        return reverse('home')
+
+class ProfileMixin(object):
+
+   def get_context_data(self, **kwargs):
+       context = super(ProfileMixin, self).get_context_data(**kwargs)
+       if self.request.user.is_authenticated():
+           context['profile'] = self.request.user.get_profile()
+       return context

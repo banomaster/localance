@@ -1,3 +1,4 @@
+from core.views import ProfileMixin
 from django.contrib import messages
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
@@ -32,14 +33,12 @@ class DJDelete(DeleteView):
     model = DJ
     success_url = reverse_lazy('djs-list')
 
-class DJDetail(DetailView):
+class DJDetail(ProfileMixin, DetailView):
     model = DJ 
     context_object_name = 'dj'
 
     def get_context_data(self, **kwargs):
      	context = super(DJDetail, self).get_context_data(**kwargs)
-     	if self.request.user.is_authenticated():
-     		context['profile'] = self.request.user.get_profile()
         dj = DJ.objects.get(slug = self.kwargs['slug'])
         context['reviews'] = Review.objects.filter(object_id=dj.id, freelancer=ContentType.objects.get_for_model(dj))
         return context

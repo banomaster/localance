@@ -16,7 +16,7 @@
     <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
     	<div class="container">
             <div id="nav_top_right">
-                <p><a href="{% url 'list_category' %}">Localance</a> {% if user.is_authenticated %}<a href="/accounts/signout/">Logout</a>{% else %}<a href="/accounts/signin/">Login</a> <a href="/accounts/signup/">Register</a>{% endif %}</p>
+                <p><a href="{% url 'list_category' %}">Localance</a> {% if user.is_authenticated %} <a href="{% url "signout" %}">Logout</a> {% else %}<a href="{% url "socialauth_begin" "facebook" %}">SignUp with Facebook</a>{% endif %}</p>
             </div>
             {% if messages %}
                 <ul class = "messages">

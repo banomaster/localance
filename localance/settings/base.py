@@ -149,9 +149,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'userena',
-    'guardian',
-    'easy_thumbnails',
     'south',
     'social_auth',
 )
@@ -173,10 +170,8 @@ LOCAL_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'userena.backends.UserenaAuthenticationBackend',
-    'guardian.backends.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
     'social_auth.backends.facebook.FacebookBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 FACEBOOK_APP_ID              = '436233936493834'
@@ -187,22 +182,8 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 ANONYMOUS_USER_ID = -1
 AUTH_PROFILE_MODULE = 'accounts.UserAccount'
 
-EMAIL_USE_TLS = True
-
-#EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'marovt.urban@gmail.com'
-EMAIL_HOST_PASSWORD = get_env_variable('HAHA')
-
 DEFAULT_FROM_MAIL = 'marovt.urban@gmail.com'
 SERVER_EMAIL = 'marovt.urban@gmail.com'
-
-
-#userena settings
-
-USERENA_MUGSHOT_PATH="mugshots/%(username)s/"
 
 
 
@@ -235,9 +216,10 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
+LOGIN_REDIRECT_URL = '/cph/'
 LOGIN_URL = '/accounts/signin/'
-LOGOUT_URL = '/accounts/signout/'
+LOGOUT_URL = '/cph/'
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
 #SOCIAL_AUTH_USER_MODEL = 'accounts.UserAccount'
 SOCIAL_AUTH_PIPELINE = (
@@ -246,6 +228,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
     'accounts.pipeline.create_profile',
+    'accounts.pipeline.load_data_new_user',
     #'accounts.pipeline.set_guardian_permissions',
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',

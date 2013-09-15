@@ -1,3 +1,5 @@
+from .models import Review
+from .forms import ReviewForm
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
@@ -5,8 +7,6 @@ from freelancers.djs.models import DJ
 from freelancers.photographers.models import Photographer
 from freelancers.tutors.models import Tutor
 from freelancers.models import Freelancer
-from .models import Review
-from .forms import ReviewForm
 
 
 class ReviewCreatePhotographer(CreateView):
