@@ -4,17 +4,28 @@ from oauth2 import Token
 from social_auth.backends.utils import build_consumer_oauth_request
 from social_auth.backends.facebook import FacebookAuth
 
-def load_data_new_user(backend, response, user, *args, **kwargs):
-    if user is None:
+from urlparse import urlparse 
+import urllib2 
+from django.core.files import File
+  #add imprt of content file wrapper
+from django.core.files.base import ContentFile
+
+def load_avatar(backend, response, user, profile=None, *args, **kwargs):
+    if profile:
         if backend.name == "facebook":
-            try:
-                url = "http://graph.facebook.com/%s/picture?width=200&height=200&redirect=false" % response['id']
-                data = json.loads(urllib2.urlopen(url).read())['data']
-                return {'avatar': data}
-            except StandardError:
-                return {'avatar': None}
+            url = "http://graph.facebook.com/%s/picture?width=200&height=200" % response['id']
+          
+            name = urlparse(url).path.split('/')[-2] + ".jpg"
+            #wrap your file content
+            content = ContentFile(urllib2.urlopen(url).read())
+            profile.avatar.save(name, content, save=True)
         else:
             raise ValueError()
+
+def testing(user, details, *args, **kwargs):
+    print details['username']
+
+    return
 
 
 def create_profile(user=None, profile=None, *args, **kwargs):

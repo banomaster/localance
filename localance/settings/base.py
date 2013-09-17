@@ -180,7 +180,7 @@ FACEBOOK_API_SECRET          = '929e413f7e0d45ab5c9bf6819ffc59c9'
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 ANONYMOUS_USER_ID = -1
-AUTH_PROFILE_MODULE = 'accounts.UserAccount'
+#AUTH_PROFILE_MODULE = 'accounts.UserAccount'
 
 DEFAULT_FROM_MAIL = 'marovt.urban@gmail.com'
 SERVER_EMAIL = 'marovt.urban@gmail.com'
@@ -205,7 +205,11 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+    'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler'
+        },
     },
     'loggers': {
         'django.request': {
@@ -213,6 +217,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'SocialAuth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     }
 }
 
@@ -225,10 +234,12 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
     #'social_auth.backends.pipeline.associate.associate_by_email',
+
+    'accounts.pipeline.testing',
     'social_auth.backends.pipeline.user.get_username',
     'social_auth.backends.pipeline.user.create_user',
     'accounts.pipeline.create_profile',
-    'accounts.pipeline.load_data_new_user',
+    'accounts.pipeline.load_avatar',
     #'accounts.pipeline.set_guardian_permissions',
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',

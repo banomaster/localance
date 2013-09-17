@@ -3,9 +3,7 @@ from django.contrib.auth.models import User
 
 class UserAccount(models.Model):
     user = models.OneToOneField(User,
-                                unique=True)
-    first_name = models.CharField(max_length = 50)
-    last_name = models.CharField(max_length = 50)
+                                unique=True)    
 
     avatar = models.ImageField(
     					blank = True,
