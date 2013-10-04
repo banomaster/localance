@@ -1,6 +1,7 @@
 {% extends "_layouts/base.html" %}
 {% block page_content %}
-<p><img src=" {{ photographer.name.get_mugshot_url }}" alt="image" /><p>
+{% load staticfiles %}
+<p><img src=" {{MEDIA_URL}}{{ photographer.name.avatar }}" alt="image" /><p>
 {% if user.is_authenticated %}
 	{% if photographer.name.user.username == profile.user.username %}
 		<a href = "{% url 'edit_photographer' photographer.slug %}">Edit Profile</a>

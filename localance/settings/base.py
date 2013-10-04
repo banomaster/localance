@@ -180,7 +180,7 @@ FACEBOOK_API_SECRET          = '929e413f7e0d45ab5c9bf6819ffc59c9'
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 ANONYMOUS_USER_ID = -1
-#AUTH_PROFILE_MODULE = 'accounts.UserAccount'
+AUTH_PROFILE_MODULE = 'accounts.UserAccount'
 
 DEFAULT_FROM_MAIL = 'marovt.urban@gmail.com'
 SERVER_EMAIL = 'marovt.urban@gmail.com'

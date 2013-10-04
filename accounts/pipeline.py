@@ -11,7 +11,7 @@ from django.core.files import File
 from django.core.files.base import ContentFile
 
 def load_avatar(backend, response, user, profile=None, *args, **kwargs):
-    if profile:
+    if profile and profile.avatar == None:
         if backend.name == "facebook":
             url = "http://graph.facebook.com/%s/picture?width=200&height=200" % response['id']
           

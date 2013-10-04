@@ -1,0 +1,52 @@
+                              List of relations
+ Schema |                       Name                       | Type  |  Owner  
+--------+--------------------------------------------------+-------+---------
+ public | accounts_useraccount                             | table | vagrant
+ public | auth_group                                       | table | vagrant
+ public | auth_group_permissions                           | table | vagrant
+ public | auth_permission                                  | table | vagrant
+ public | auth_user                                        | table | vagrant
+ public | auth_user_groups                                 | table | vagrant
+ public | auth_user_user_permissions                       | table | vagrant
+ public | categories_category                              | table | vagrant
+ public | categories_category_cities                       | table | vagrant
+ public | cities_city                                      | table | vagrant
+ public | django_admin_log                                 | table | vagrant
+ public | django_content_type                              | table | vagrant
+ public | django_session                                   | table | vagrant
+ public | django_site                                      | table | vagrant
+ public | djs_dj                                           | table | vagrant
+ public | djs_dj_cities                                    | table | vagrant
+ public | djs_dj_genres                                    | table | vagrant
+ public | djs_dj_occasions                                 | table | vagrant
+ public | djs_listdjgenres                                 | table | vagrant
+ public | djs_listdjoccasions                              | table | vagrant
+ public | easy_thumbnails_source                           | table | vagrant
+ public | easy_thumbnails_thumbnail                        | table | vagrant
+ public | guardian_groupobjectpermission                   | table | vagrant
+ public | guardian_userobjectpermission                    | table | vagrant
+ public | inquiries_djs_inquirydj                          | table | vagrant
+ public | inquiries_djs_listdjoccasion                     | table | vagrant
+ public | inquiries_photographers_inquiryphotographer      | table | vagrant
+ public | inquiries_photographers_listphotographeroccasion | table | vagrant
+ public | inquiries_tutors_inquirytutor                    | table | vagrant
+ public | inquiries_tutors_inquirytutor_subjects           | table | vagrant
+ public | photographers_listphotographerclients            | table | vagrant
+ public | photographers_listphotographerskills             | table | vagrant
+ public | photographers_photographer                       | table | vagrant
+ public | photographers_photographer_cities                | table | vagrant
+ public | photographers_photographer_clients               | table | vagrant
+ public | photographers_photographer_skills                | table | vagrant
+ public | reviews_review                                   | table | vagrant
+ public | social_auth_association                          | table | vagrant
+ public | social_auth_nonce                                | table | vagrant
+ public | social_auth_usersocialauth                       | table | vagrant
+ public | south_migrationhistory                           | table | vagrant
+ public | tutors_listtutorclients                          | table | vagrant
+ public | tutors_listtutorskills                           | table | vagrant
+ public | tutors_tutor                                     | table | vagrant
+ public | tutors_tutor_cities                              | table | vagrant
+ public | tutors_tutor_clients                             | table | vagrant
+ public | tutors_tutor_skills                              | table | vagrant
+(47 rows)
+
