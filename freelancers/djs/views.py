@@ -25,6 +25,10 @@ class DJCreate(DJActionMixin, CreateView):
     model = DJ
     action = "created"
 
+    def form_valid(self, form):
+        form.instance.name = self.request.user.get_profile()
+        return super(DJCreate, self).form_valid(form)
+
 class DJUpdate(DJActionMixin, UpdateView):
     model = DJ
     action = "updated"#

@@ -25,6 +25,10 @@ class TutorCreate(TutorActionMixin, CreateView):
     model = Tutor
     action = "created"
 
+    def form_valid(self, form):
+        form.instance.name = self.request.user.get_profile()
+        return super(TutorCreate, self).form_valid(form)
+
 class TutorUpdate(TutorActionMixin, UpdateView):
     model = Tutor
     action = "updated"#
