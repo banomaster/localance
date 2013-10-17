@@ -16,7 +16,16 @@
     <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
     	<div class="container">
             <div id="nav_top_right">
-                <p><a href="{% url 'list_category' %}">Localance</a> {% if user.is_authenticated %} <a href="{% url "signout" %}">Logout</a> {% else %}<a href="{% url "socialauth_begin" "facebook" %}">SignUp with Facebook</a>{% endif %}</p>
+                <p>
+                <a href="{% url 'list_category' %}">Localance</a> 
+                {% if user.is_authenticated %} 
+                    <a href="{% url "signout" %}">Logout</a> 
+                {% else %}
+                <a id = "become_a_freelancer" data-form = "/cph/accounts/"href="#">Become a freelancer</a> <a href="{% url "socialauth_begin" "facebook" %}"><img src=" {{MEDIA_URL}}/face.png" alt="face"></a>
+                {% endif %}
+                </p>
+            </div>
+            <div class="modal" id="authModal" aria-hidden="true">
             </div>
             {% if messages %}
                 <ul class = "messages">
@@ -31,13 +40,40 @@
             {% endif %}
         	{% block page_content %}{% endblock %}          
     	</div>
+        {% block extrascript %}{% endblock %}  
         <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+
         <script>
             setTimeout(fade_out, 2000);
 
             function fade_out() {
                 $(".messages").fadeOut().empty();
             }
+
+            $("#become_a_freelancer").click(function(ev) { // for each edit contact url
+                ev.preventDefault(); // prevent navigation
+                var url = $(this).data("form"); // get the contact form url
+                $("#authModal").load(url, function() { // load the url into the modal
+                    $(this).modal('show'); // display the modal on url load
+                });
+                return false; // prevent the click propagation
+            });
+        
+
+            $('#inquiryModal').on('submit','.inquiry-form', function() {
+
+                $.ajax({ 
+                    type: $(this).attr('method'), 
+                    url: this.action, 
+                    data: $(this).serialize(),
+                    context: this,
+                    success: function(data, jqXHR) {
+                            $('#inquiryModal').modal('hide');   
+                        }, 
+                });
+                return false;
+            });
+
         </script>
     </body>
 </html>

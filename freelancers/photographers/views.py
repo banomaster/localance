@@ -21,7 +21,7 @@ class PhotographerActionMixin(object):#
 		messages.info(self.request, msg)
 		return super(PhotographerActionMixin, self).form_valid(form)
 	
-class PhotographerCreate(PhotographerActionMixin, CreateView):#
+class PhotographerCreate(PhotographerActionMixin, ProfileMixin, CreateView):#
     form_class = PhotographerForm
     model = Photographer
     action = "created"#
@@ -29,6 +29,15 @@ class PhotographerCreate(PhotographerActionMixin, CreateView):#
     def form_valid(self, form):
         form.instance.name = self.request.user.get_profile()
         return super(PhotographerCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(PhotographerCreate, self).get_context_data(**kwargs)
+        photographers = Photographer.objects.all()
+        l = []#photographers users
+        for photographer in photographers:
+            l.append(photographer.name.user.id)
+        context['photographers'] = l
+        return context
 
 class PhotographerUpdate(PhotographerActionMixin, UpdateView):#
     model = Photographer
@@ -51,5 +60,3 @@ class PhotographerDetail(ProfileMixin, DetailView):
 class PhotographerList(ListView):
 	model = Photographer
 	context_object_name = 'photographers'
-		#queryset = Photographer.objects.all().values('nickname')
-

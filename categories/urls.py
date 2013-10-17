@@ -4,6 +4,7 @@ from django.views.generic import DetailView
 from categories.models import Category
 
 urlpatterns = patterns('',
+	url(r'^accounts/', include('accounts.urls')),
 	url(r'^photographers/',include('freelancers.photographers.urls')), 
     url(r'^djs/',include('freelancers.djs.urls')),
     url(r'^tutors/',include('freelancers.tutors.urls')),      

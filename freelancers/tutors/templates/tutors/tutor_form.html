@@ -1,11 +1,10 @@
-{% extends "_layouts/base.html" %}
-{% block page_content %}
-{% if user.is_authenticated %}
-<form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
+{% if user.is_authenticated and profile.user.id not in tutors %}
+<form class="freelancer-form" enctype="multipart/form-data" action="/cph/tutors/add/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
+{% elif not user.is_authenticated %}
+<p> You must be logged in to create a freelancer </p>
 {% else %}
-<p>You must be authenticated to add freelancer</p>
+<p> You already have one tutor! </p>
 {% endif %}
-{% endblock %}

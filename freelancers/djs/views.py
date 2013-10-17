@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
 from freelancers.djs.models import DJ
 from freelancers.djs.forms import DJForm
 from reviews.models import Review
@@ -20,7 +21,7 @@ class DJActionMixin(object):
 		messages.info(self.request, msg)
 		return super(DJActionMixin, self).form_valid(form)
 	
-class DJCreate(DJActionMixin, CreateView):
+class DJCreate(DJActionMixin, ProfileMixin, CreateView):
     form_class = DJForm
     model = DJ
     action = "created"
@@ -28,6 +29,15 @@ class DJCreate(DJActionMixin, CreateView):
     def form_valid(self, form):
         form.instance.name = self.request.user.get_profile()
         return super(DJCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(DJCreate, self).get_context_data(**kwargs)
+        djs = DJ.objects.all()
+        l = []#djs users
+        for dj in djs:
+            l.append(dj.name.user.id)
+        context['djs'] = l
+        return context
 
 class DJUpdate(DJActionMixin, UpdateView):
     model = DJ

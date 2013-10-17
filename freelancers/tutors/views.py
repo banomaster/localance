@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
 from freelancers.tutors.models import Tutor
 from freelancers.tutors.forms import TutorForm
 from reviews.models import Review
@@ -20,7 +21,7 @@ class TutorActionMixin(object):
 		messages.info(self.request, msg)
 		return super(TutorActionMixin, self).form_valid(form)
 	
-class TutorCreate(TutorActionMixin, CreateView):
+class TutorCreate(TutorActionMixin, ProfileMixin, CreateView):
     form_class = TutorForm
     model = Tutor
     action = "created"
@@ -29,6 +30,15 @@ class TutorCreate(TutorActionMixin, CreateView):
         form.instance.name = self.request.user.get_profile()
         return super(TutorCreate, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super(TutorCreate, self).get_context_data(**kwargs)
+        tutors = Tutor.objects.all()
+        l = []#tutors users
+        for tutor in tutors:
+            l.append(tutor.name.user.id)
+        context['tutors'] = l
+        return context
+        
 class TutorUpdate(TutorActionMixin, UpdateView):
     model = Tutor
     action = "updated"#

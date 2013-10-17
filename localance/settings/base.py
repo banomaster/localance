@@ -225,7 +225,7 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/cph/'
+LOGIN_REDIRECT_URL = '/cph/accounts/add/'
 LOGIN_URL = '/accounts/signin/'
 LOGOUT_URL = '/cph/'
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
